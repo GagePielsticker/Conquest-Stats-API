@@ -13,7 +13,7 @@ module.exports = client => {
      * @param {Integer} userCount
      * @param {Integer} shardCount
      */
-    postStats: async (guildCount, userCount, shardCount) => {
+    postBotStats: async (guildCount, userCount, shardCount) => {
       return client.database.collection('statistics').insertOne({
         time: moment().unix(),
         guilds: guildCount,
@@ -26,7 +26,7 @@ module.exports = client => {
      * Fetches Statistics from database
      * @returns {Promise<object>}
      */
-    getStats: async () => {
+    getBotStats: async () => {
       return client.database.collection('statistics').find().sort({ time: -1 })[0]
     }
   }
