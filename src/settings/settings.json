@@ -1,12 +1,16 @@
 {
-    "database": {
-        "host": "127.0.0.1",
-        "port": "27017",
-        "database": "conquest",
-        "username": "",
-        "password": ""
-    },
-    "api" : {
-      "port" : 30003
-    }
+  "database": {
+    "host": "127.0.0.1",
+    "port": "27017",
+    "database": "conquest",
+    "username": "",
+    "password": ""
+  },
+  "api": {
+    "port": 30003
+  },
+  "latency": {
+    "web": "https://conquestsim.io",
+    "gameAPI": ""
+  }
 }

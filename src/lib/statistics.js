@@ -3,6 +3,8 @@
 module.exports = client => {
   /* Get dependencies */
   const moment = require('moment')
+  const https = require('https')
+  const { performance } = require('perf_hooks')
 
   /** @namespace */
   client.stats = {
@@ -19,6 +21,26 @@ module.exports = client => {
         guilds: guildCount,
         users: userCount,
         shards: shardCount
+      })
+    },
+
+    /**
+     * Saves latency statistics to database at current time
+     * @param {Integer} webLatency
+     * @param {Integer} gameAPILatency
+     */
+    postLatencyStats: async () => {
+      let webLatency = null
+      const webStart = performance.now()
+      https.get(client.settings.latency.web, res => {
+        webLatency = performance.now() - webStart
+        // TODO: a different name for this collection maybe?
+        return client.database.collection('statistics').insertOne({
+          time: moment().unix(),
+          latencies: {
+            web: webLatency
+          }
+        })
       })
     },
 
