@@ -10,7 +10,7 @@ module.exports = client => {
   client.stats = {
 
     /**
-     * Saves current guildCount to database at current time
+     * Saves bot statistics to database at current time
      * @param {Integer} guildCount
      * @param {Integer} userCount
      * @param {Integer} shardCount
@@ -26,16 +26,13 @@ module.exports = client => {
 
     /**
      * Saves latency statistics to database at current time
-     * @param {Integer} webLatency
-     * @param {Integer} gameAPILatency
      */
     postLatencyStats: async () => {
       let webLatency = null
       const webStart = performance.now()
       https.get(client.settings.latency.web, res => {
         webLatency = performance.now() - webStart
-        // TODO: a different name for this collection maybe?
-        return client.database.collection('statistics').insertOne({
+        return client.database.collection('latencyStatistics').insertOne({
           time: moment().unix(),
           latencies: {
             web: webLatency
@@ -45,11 +42,19 @@ module.exports = client => {
     },
 
     /**
-     * Fetches Statistics from database
+     * Fetches bot statistics from database
      * @returns {Promise<object>}
      */
     getBotStats: async () => {
-      return client.database.collection('statistics').find().sort({ time: -1 })[0]
+      return client.database.collection('botStatistics').find().sort({ time: -1 })[0]
+    },
+
+    /**
+     * Fetches latency statistics from database
+     * @returns {Promise<object>}
+     */
+    getLatencyStats: async () => {
+      return client.database.collection('latencyStatistics').find().sort({ time: -1 })[0]
     }
   }
 }
